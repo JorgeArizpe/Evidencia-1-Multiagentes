@@ -3,6 +3,29 @@ from owlready2 import *
 import random
 import math
 from constants import positions
+from flask import Flask, jsonify
+
+app = Flask(__name__)
+
+@app.route('/move', methods=['GET'])
+def get_position():
+    if positions:
+        return jsonify(positions.pop(0))
+    else:
+        return jsonify({'status': 'error'}), 404
+
+@app.route('/move', methods=['PUT'])
+def delete_positions():
+    global positions
+    positions.clear()
+
+    return jsonify({'status': 'success'})
+
+@app.route('/move', methods=['POST'])
+def move_object():
+    global positions
+    start()
+    return jsonify({'status': 'success'})
 
 onto = get_ontology("file://onto.owl")
 onto.destroy(update_relation = True, update_is_a = True)
@@ -344,3 +367,6 @@ def start():
   model = StoreModel(parameters)
 
   model.run()
+
+if __name__ == '__main__':
+  app.run(host='127.0.0.1', port=5000)
