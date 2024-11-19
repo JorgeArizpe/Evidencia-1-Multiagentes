@@ -2,8 +2,9 @@ import agentpy as ap
 from owlready2 import *
 import random
 import math
-from constants import positions
 from flask import Flask, jsonify
+
+positions= []
 
 app = Flask(__name__)
 
